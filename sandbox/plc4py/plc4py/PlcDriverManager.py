@@ -45,12 +45,10 @@ class PlcDriverManager:
 
         self.class_loader.register(plc4py.drivers)
         self.class_loader.load_setuptools_entrypoints("plc4py.drivers")
-        self._driverMap = {
-            key: loader
-            for key, loader in zip(
-                self.class_loader.hook.key(), self.class_loader.hook.get_driver()
-            )
-        }
+        self._driverMap = dict(
+            zip(self.class_loader.hook.key(), self.class_loader.hook.get_driver())
+        )
+
         for driver in self._driverMap:
             logging.info(f"... {driver} .. OK")
         self.class_loader.check_pending()
